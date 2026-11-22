@@ -19,7 +19,7 @@
       background: #ff85b3;
     }
 
-    /* Pantalla 1: Pregunta inicial */
+    /* Pantalla 1: Pregunta de cumpleaños */
     #pantalla-inicio {
       position: fixed;
       inset: 0;
@@ -296,14 +296,13 @@
     <div class="reproductor">
       <button id="btn-play">▶</button>
       <div class="info-audio">
-        <div class="titulo-audio">🎵 Nuestra canción especial</div>
+        <div class="titulo-audio">🎵 Como diamantes brillamos</div>
         <div class="barra-progreso">
           <div id="progreso-relleno" class="progreso-relleno"></div>
         </div>
       </div>
       <div id="tiempo-audio" class="tiempo-audio">0:00</div>
-      <!-- Coloca tu archivo cancion.mp3 en la misma carpeta o pon un enlace directo a un MP3 -->
-      <audio id="audio-regalo" src="cancion.mp3" loop></audio>
+      <audio id="audio-regalo" src="cancion.mp3" loop preload="auto"></audio>
     </div>
   </section>
 
@@ -383,7 +382,7 @@
     const nodos = [];
     let rotacionY = 0;
     let rotacionX = 0.15;
-    let velocidadAutoY = 0.0045;
+    const velocidadAutoY = 0.0045;
     let arrastrando = false;
     let prevX = 0;
     let prevY = 0;
@@ -394,7 +393,6 @@
       universoActivo = true;
 
       const cantidad = 48;
-      // Distribuye las palabras en una esfera/anillo 3D alrededor del agujero negro central
       for (let i = 0; i < cantidad; i++) {
         const el = document.createElement("div");
         el.className = "palabra-3d";
@@ -404,7 +402,6 @@
         el.style.color = colores[i % colores.length];
         el.style.fontSize = `${13 + (i % 4) * 3}px`;
 
-        // Ángulos esféricos con separación mínima para no tapar por completo el centro
         const phi = Math.acos(1 - 2 * ((i + 0.5) / cantidad));
         const theta = Math.PI * (1 + Math.sqrt(5)) * i;
         const radio = 135 + (i % 5) * 36;
@@ -426,22 +423,18 @@
         const sinX = Math.sin(rotacionX);
 
         for (const n of nodos) {
-          // Rotación alrededor del eje Y
           let x1 = n.x0 * cosY - n.z0 * sinY;
           let z1 = n.z0 * cosY + n.x0 * sinY;
           let y1 = n.y0;
 
-          // Rotación suave alrededor del eje X
           let y2 = y1 * cosX - z1 * sinX;
           let z2 = z1 * cosX + y1 * sinX;
 
-          // Proyección en perspectiva
           const profundidad = focal + z2;
           const escala = Math.max(0.35, focal / Math.max(120, profundidad));
           const px = x1 * escala;
           const py = y2 * escala;
 
-          // Evita que un texto quede encima justo del núcleo negro de 92px
           const distCentro = Math.hypot(px, py);
           const radioNucleo = 48;
           let finalX = px;
@@ -467,7 +460,6 @@
       renderizar();
     }
 
-    // Arrastrar con el dedo o mouse para girar las palabras alrededor del agujero negro
     pantallaUniverso.addEventListener("pointerdown", (e) => {
       arrastrando = true;
       prevX = e.clientX;
@@ -488,7 +480,7 @@
       arrastrando = false;
     });
 
-    // Controles de audio
+    // Controles de audio (cancion.mp3)
     function formatearTiempo(seg) {
       if (!Number.isFinite(seg) || seg < 0) return "0:00";
       const m = Math.floor(seg / 60);
@@ -503,14 +495,19 @@
       }
     });
 
+    audio.addEventListener("play", () => {
+      btnPlay.textContent = "❚❚";
+    });
+
+    audio.addEventListener("pause", () => {
+      btnPlay.textContent = "▶";
+    });
+
     btnPlay.addEventListener("click", () => {
       if (audio.paused) {
-        audio.play().then(() => {
-          btnPlay.textContent = "❚❚";
-        }).catch(() => {});
+        audio.play().catch(() => {});
       } else {
         audio.pause();
-        btnPlay.textContent = "▶";
       }
     });
 
@@ -519,11 +516,7 @@
       pantallaCelebra.style.display = "none";
       pantallaUniverso.style.display = "block";
       crearNubesAlrededorDelCentro();
-      audio.play().then(() => {
-        btnPlay.textContent = "❚❚";
-      }).catch(() => {
-        btnPlay.textContent = "▶";
-      });
+      audio.play().catch(() => {});
     });
   </script>
 </body>
