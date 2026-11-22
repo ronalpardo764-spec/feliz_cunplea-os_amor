@@ -273,7 +273,7 @@
 
   <!-- 1. Pregunta de cumpleaños -->
   <section id="pantalla-inicio">
-    <h1>🎂 ¡Feliz cumpleaños, mi amor! Lista para celebrar un año más juntos. ¿Un año más juntos tú y yo, bebé? 💖</h1>
+    <h1>🎂 ¡Feliz cumpleaños, mi amor lista para celebrar ¿Un año más juntos tú y yo, bebé? 💖</h1>
     <div class="zona-botones">
       <button id="btn-si">¡Sí, bebé! 💕</button>
       <button id="btn-no">No 🙈</button>
@@ -528,12 +528,12 @@
       }
     });
 
-    btnRegalo.addEventListener("click", () => {
+    btnRegalo.addEventListener("click",()=>{
       clearInterval(intervaloCorazones);
-      pantallaCelebra.style.display = "none";
-      pantallaUniverso.style.display = "block";
+      pantallaCelebra.style.display="none";
+      pantallaUniverso.style.display="block";
       crearNubesAlrededorDelCentro();
-      audio.play().catch(() => {});
+      audio.play().catch(()=>{});
     });
   </script>
 </body>
