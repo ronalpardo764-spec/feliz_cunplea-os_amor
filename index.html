@@ -2,308 +2,528 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>¡Feliz Cumpleaños, Mi Amor!</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body { overflow: hidden; touch-action: manipulation; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
 
-    .pantalla-rosa {
-      min-height: 100vh;
-      width: 100vw;
-      background: linear-gradient(180deg, #ff9ebb, #ff6b9d);
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #ff85b3;
+    }
+
+    /* Pantalla 1: Pregunta inicial */
+    #pantalla-inicio {
+      position: fixed;
+      inset: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 24px;
       text-align: center;
-      position: relative;
+      background: linear-gradient(180deg, #ff9ebb 0%, #ff6b9d 100%);
+      z-index: 30;
     }
 
-    h1 {
-      color: #fff;
-      font-size: 1.85rem;
+    #pantalla-inicio h1 {
+      color: #ffffff;
+      font-size: clamp(1.45rem, 5.5vw, 2.2rem);
       line-height: 1.3;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-      margin-bottom: 36px;
-      max-width: 540px;
+      max-width: 560px;
+      margin-bottom: 34px;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.22);
     }
 
-    .botones {
-      display: flex;
-      gap: 18px;
-      align-items: center;
-      justify-content: center;
+    .zona-botones {
       position: relative;
       width: 100%;
-      height: 140px;
+      max-width: 420px;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
     }
 
     button {
       border: none;
       border-radius: 999px;
-      padding: 14px 28px;
-      font-size: 1.1rem;
+      padding: 14px 26px;
+      font-size: 1.05rem;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-      transition: transform 0.15s ease;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     #btn-si {
-      background: #ff2e79;
-      color: #fff;
-      z-index: 2;
+      background: #ff2a75;
+      color: #ffffff;
+      z-index: 5;
     }
 
     #btn-no {
-      background: #fff;
-      color: #ff2e79;
+      background: #ffffff;
+      color: #ff2a75;
       position: relative;
-      z-index: 2;
+      z-index: 6;
+      transition: left 0.14s ease-out, top 0.14s ease-out;
     }
 
-    #pantalla-celebra, #pantalla-universo {
-      display: none;
-      min-height: 100vh;
-      width: 100vw;
+    /* Pantalla 2: Celebración */
+    #pantalla-celebra {
       position: fixed;
       inset: 0;
-    }
-
-    #pantalla-celebra {
-      background: linear-gradient(180deg, #ff85b3, #ff4d8d);
+      display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: #fff;
-      text-align: center;
       padding: 24px;
+      text-align: center;
+      background: linear-gradient(180deg, #ff8ab6 0%, #ff4788 100%);
+      color: #ffffff;
+      z-index: 25;
+      overflow: hidden;
+    }
+
+    #pantalla-celebra h2 {
+      font-size: clamp(1.8rem, 7vw, 2.6rem);
+      margin-bottom: 12px;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+      z-index: 2;
+    }
+
+    #pantalla-celebra p {
+      font-size: 1.1rem;
+      max-width: 440px;
+      margin-bottom: 28px;
+      z-index: 2;
     }
 
     #btn-regalo {
-      margin-top: 28px;
-      background: #fff;
-      color: #ff2e79;
-      font-size: 1.2rem;
+      background: #ffffff;
+      color: #ff2a75;
+      font-size: 1.15rem;
+      padding: 15px 30px;
+      z-index: 2;
     }
 
+    .corazon-flotante {
+      position: absolute;
+      bottom: -40px;
+      pointer-events: none;
+      z-index: 1;
+      animation: subirCorazon linear forwards;
+    }
+
+    @keyframes subirCorazon {
+      0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 0.95;
+      }
+      100% {
+        transform: translateY(-115vh) scale(1.25);
+        opacity: 0;
+      }
+    }
+
+    /* Pantalla 3: Agujero negro central + Universo 3D de palabras */
     #pantalla-universo {
-      background: radial-gradient(circle at center, #3b0d09 0%, #140507 55%, #060408 100%);
-      color: #fff;
+      position: fixed;
+      inset: 0;
+      display: none;
+      background: radial-gradient(circle at 50% 50%, #4d1208 0%, #240705 38%, #0a0408 75%, #040306 100%);
       overflow: hidden;
       touch-action: none;
+      z-index: 20;
     }
 
-    /* Agujero negro central con halo */
-    .agujero-negro {
-      position: fixed;
+    /* Resplandor cálido alrededor del agujero negro */
+    .resplandor-centro {
+      position: absolute;
       left: 50%;
       top: 50%;
-      width: 110px;
-      height: 110px;
+      width: 290px;
+      height: 290px;
       transform: translate(-50%, -50%);
       border-radius: 50%;
-      background: #050507;
-      box-shadow:
-        0 0 22px 8px rgba(255, 90, 30, 0.75),
-        0 0 55px 22px rgba(255, 45, 85, 0.38),
-        inset 0 0 18px #000;
-      z-index: 5;
+      background: radial-gradient(
+        circle,
+        rgba(255, 120, 35, 0.55) 18%,
+        rgba(255, 55, 25, 0.25) 45%,
+        rgba(255, 30, 70, 0) 72%
+      );
       pointer-events: none;
+      z-index: 4;
     }
 
-    .palabra {
+    /* Agujero negro en el centro */
+    .agujero-negro {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 92px;
+      height: 92px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: #030305;
+      box-shadow:
+        0 0 18px 4px rgba(255, 110, 30, 0.85),
+        0 0 42px 12px rgba(255, 50, 20, 0.45),
+        inset 0 0 14px #000000;
+      pointer-events: none;
+      z-index: 6;
+    }
+
+    #escena-palabras {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 8;
+    }
+
+    .palabra-3d {
       position: absolute;
       left: 50%;
       top: 50%;
       white-space: nowrap;
-      font-weight: 700;
+      font-weight: 800;
       user-select: none;
-      text-shadow: 0 0 12px rgba(255, 110, 140, 0.55);
       pointer-events: none;
-      z-index: 10;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85);
+      will-change: transform, opacity;
     }
 
+    /* Reproductor inferior */
     .reproductor {
       position: fixed;
-      bottom: 24px;
       left: 50%;
+      bottom: 20px;
       transform: translateX(-50%);
-      width: min(90vw, 420px);
-      background: rgba(255, 255, 255, 0.14);
+      width: min(92vw, 430px);
+      background: rgba(25, 12, 22, 0.78);
+      border: 1px solid rgba(255, 155, 195, 0.25);
       backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 14px 18px;
+      border-radius: 22px;
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       gap: 12px;
-      z-index: 20;
+      z-index: 35;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
     }
 
-    .reproductor button {
-      padding: 10px 16px;
+    #btn-play {
+      padding: 10px 15px;
       font-size: 0.95rem;
-      background: #ff4d8d;
-      color: #fff;
+      background: #ff4788;
+      color: #ffffff;
       box-shadow: none;
+      flex-shrink: 0;
     }
 
-    .titulo-cancion {
-      font-size: 0.9rem;
-      color: #ffe3ee;
+    .info-audio {
       flex: 1;
-      text-align: left;
+      min-width: 0;
+    }
+
+    .titulo-audio {
+      color: #ffe6f0;
+      font-size: 0.88rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 6px;
+    }
+
+    .barra-progreso {
+      width: 100%;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.2);
+      overflow: hidden;
+    }
+
+    .progreso-relleno {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #ff6b9d, #ffbe55);
+      transition: width 0.2s linear;
+    }
+
+    .tiempo-audio {
+      color: #ffd1e3;
+      font-size: 0.78rem;
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
     }
   </style>
 </head>
 <body>
 
   <!-- 1. Pregunta de cumpleaños -->
-  <section id="pantalla-inicio" class="pantalla-rosa">
+  <section id="pantalla-inicio">
     <h1>🎂 ¡Feliz cumpleaños, mi amor! Lista para celebrar un año más juntos. ¿Un año más juntos tú y yo, bebé? 💖</h1>
-    <div class="botones">
+    <div class="zona-botones">
       <button id="btn-si">¡Sí, bebé! 💕</button>
       <button id="btn-no">No 🙈</button>
     </div>
   </section>
 
-  <!-- 2. Confirmación y botón de regalo -->
+  <!-- 2. Celebración -->
   <section id="pantalla-celebra">
-    <h1 style="margin-bottom: 12px;">¡Sabía que dirías que sí! 🥳💖</h1>
-    <p style="font-size: 1.15rem; max-width: 440px;">
-      Por un año más a tu lado y por todos los que vienen. ¡Feliz cumpleaños, mi amor!
-    </p>
+    <h2>¡Sabía que dirías que sí! 🥳💖</h2>
+    <p>Por un año más a tu lado y por todos los que vienen. ¡Feliz cumpleaños, mi amor!</p>
     <button id="btn-regalo">🎁 Abre el regalo</button>
   </section>
 
-  <!-- 3. Universo de palabras con agujero negro central -->
+  <!-- 3. Agujero negro central + mensajes orbitando alrededor -->
   <section id="pantalla-universo">
+    <div class="resplandor-centro"></div>
     <div class="agujero-negro"></div>
-    <div id="contenedor-palabras"></div>
+    <div id="escena-palabras"></div>
+
     <div class="reproductor">
-      <button id="btn-play">▶ / ❚❚</button>
-      <div class="titulo-cancion">🎵 Nuestra canción de cumpleaños</div>
+      <button id="btn-play">▶</button>
+      <div class="info-audio">
+        <div class="titulo-audio">🎵 Nuestra canción especial</div>
+        <div class="barra-progreso">
+          <div id="progreso-relleno" class="progreso-relleno"></div>
+        </div>
+      </div>
+      <div id="tiempo-audio" class="tiempo-audio">0:00</div>
+      <!-- Coloca tu archivo cancion.mp3 en la misma carpeta o pon un enlace directo a un MP3 -->
       <audio id="audio-regalo" src="cancion.mp3" loop></audio>
     </div>
   </section>
 
   <script>
-    const btnNo = document.getElementById("btn-no");
-    const btnSi = document.getElementById("btn-si");
-    const btnRegalo = document.getElementById("btn-regalo");
     const pantallaInicio = document.getElementById("pantalla-inicio");
     const pantallaCelebra = document.getElementById("pantalla-celebra");
     const pantallaUniverso = document.getElementById("pantalla-universo");
-    const contenedorPalabras = document.getElementById("contenedor-palabras");
+    const btnSi = document.getElementById("btn-si");
+    const btnNo = document.getElementById("btn-no");
+    const btnRegalo = document.getElementById("btn-regalo");
+    const escenaPalabras = document.getElementById("escena-palabras");
     const audio = document.getElementById("audio-regalo");
     const btnPlay = document.getElementById("btn-play");
+    const progresoRelleno = document.getElementById("progreso-relleno");
+    const tiempoAudio = document.getElementById("tiempo-audio");
 
-    function moverBotonNo() {
+    // Botón "No" que escapa al intentar tocarlo o pasar cerca
+    function escaparBotonNo() {
       btnNo.style.position = "fixed";
-      const maxX = window.innerWidth - btnNo.offsetWidth - 20;
-      const maxY = window.innerHeight - btnNo.offsetHeight - 20;
-      const x = Math.max(10, Math.random() * maxX);
-      const y = Math.max(10, Math.random() * maxY);
+      const margen = 16;
+      const maxX = Math.max(margen, window.innerWidth - btnNo.offsetWidth - margen);
+      const maxY = Math.max(margen, window.innerHeight - btnNo.offsetHeight - margen);
+      const x = margen + Math.random() * (maxX - margen);
+      const y = margen + Math.random() * (maxY - margen);
       btnNo.style.left = `${x}px`;
       btnNo.style.top = `${y}px`;
     }
 
-    btnNo.addEventListener("pointerenter", moverBotonNo);
+    btnNo.addEventListener("pointerenter", escaparBotonNo);
     btnNo.addEventListener("touchstart", (e) => {
       e.preventDefault();
-      moverBotonNo();
-    });
+      escaparBotonNo();
+    }, { passive: false });
     btnNo.addEventListener("click", (e) => {
       e.preventDefault();
-      moverBotonNo();
+      escaparBotonNo();
     });
+
+    // Corazones flotantes en pantalla de celebración
+    let intervaloCorazones = null;
+    function iniciarCorazones() {
+      const emojis = ["💖", "💕", "💘", "💗", "✨"];
+      intervaloCorazones = setInterval(() => {
+        const c = document.createElement("div");
+        c.className = "corazon-flotante";
+        c.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        c.style.left = `${Math.random() * 92}%`;
+        c.style.fontSize = `${18 + Math.random() * 18}px`;
+        c.style.animationDuration = `${2.6 + Math.random() * 1.8}s`;
+        pantallaCelebra.appendChild(c);
+        setTimeout(() => c.remove(), 4500);
+      }, 220);
+    }
 
     btnSi.addEventListener("click", () => {
       pantallaInicio.style.display = "none";
       pantallaCelebra.style.display = "flex";
+      iniciarCorazones();
     });
 
-    const palabras = [
-      "Feliz cumpleaños", "Un año más juntos", "Tú y yo", "Mi amor",
-      "Mi cielo", "Eres todo", "Mi vida", "Siempre juntos",
-      "Mi lugar favorito", "Hermosa", "Amor eterno", "Mi alegría"
+    // Mensajes que giran alrededor del agujero negro central
+    const mensajes = [
+      "💖 Feliz cumpleaños",
+      "✨ Un año más juntos",
+      "💕 Tú y yo",
+      "🌟 Mi cielo",
+      "👑 Mi reina",
+      "💘 Te amo",
+      "💫 Mi universo",
+      "🌸 Tu sonrisa",
+      "❤️ Eres todo",
+      "🔥 Mi vida",
+      "💎 Siempre juntos",
+      "🌙 Mi lugar favorito"
     ];
 
-    const orbitas = [];
-    let rotacionExtra = 0;
+    const nodos = [];
+    let rotacionY = 0;
+    let rotacionX = 0.15;
+    let velocidadAutoY = 0.0045;
     let arrastrando = false;
-    let ultimoX = 0;
-    let universoIniciado = false;
+    let prevX = 0;
+    let prevY = 0;
+    let universoActivo = false;
 
-    function crearUniverso() {
-      if (universoIniciado) return;
-      universoIniciado = true;
+    function crearNubesAlrededorDelCentro() {
+      if (universoActivo) return;
+      universoActivo = true;
 
-      const total = 44;
-      for (let i = 0; i < total; i++) {
+      const cantidad = 48;
+      // Distribuye las palabras en una esfera/anillo 3D alrededor del agujero negro central
+      for (let i = 0; i < cantidad; i++) {
         const el = document.createElement("div");
-        el.className = "palabra";
-        el.textContent = palabras[i % palabras.length];
-        const tam = 13 + Math.random() * 13;
-        el.style.fontSize = `${tam}px`;
-        el.style.color = i % 3 === 0 ? "#ffd6e7" : (i % 3 === 1 ? "#ff94b8" : "#ffcab0");
+        el.className = "palabra-3d";
+        el.textContent = mensajes[i % mensajes.length];
 
-        // Radio mínimo fuera del agujero negro (centro ~55px de radio)
-        const radioX = 85 + Math.random() * Math.max(110, window.innerWidth * 0.42);
-        const radioY = 80 + Math.random() * Math.max(120, window.innerHeight * 0.42);
+        const colores = ["#ffd6e7", "#ff9ec4", "#ffca99", "#ffffff", "#ff7aa8"];
+        el.style.color = colores[i % colores.length];
+        el.style.fontSize = `${13 + (i % 4) * 3}px`;
 
-        orbitas.push({
-          el,
-          angulo: Math.random() * Math.PI * 2,
-          velocidad: (0.002 + Math.random() * 0.004) * (i % 2 === 0 ? 1 : -1),
-          radioX,
-          radioY,
-          escala: 0.8 + Math.random() * 0.45
-        });
-        contenedorPalabras.appendChild(el);
+        // Ángulos esféricos con separación mínima para no tapar por completo el centro
+        const phi = Math.acos(1 - 2 * ((i + 0.5) / cantidad));
+        const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+        const radio = 135 + (i % 5) * 36;
+
+        const x0 = radio * Math.sin(phi) * Math.cos(theta);
+        const y0 = radio * Math.cos(phi) * 0.85;
+        const z0 = radio * Math.sin(phi) * Math.sin(theta);
+
+        escenaPalabras.appendChild(el);
+        nodos.push({ el, x0, y0, z0 });
       }
 
-      function animar() {
-        for (const item of orbitas) {
-          item.angulo += item.velocidad;
-          const a = item.angulo + rotacionExtra;
-          const x = Math.cos(a) * item.radioX;
-          const y = Math.sin(a) * item.radioY;
-          item.el.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px) scale(${item.escala})`;
+      const focal = 420;
+
+      function renderizar() {
+        const cosY = Math.cos(rotacionY);
+        const sinY = Math.sin(rotacionY);
+        const cosX = Math.cos(rotacionX);
+        const sinX = Math.sin(rotacionX);
+
+        for (const n of nodos) {
+          // Rotación alrededor del eje Y
+          let x1 = n.x0 * cosY - n.z0 * sinY;
+          let z1 = n.z0 * cosY + n.x0 * sinY;
+          let y1 = n.y0;
+
+          // Rotación suave alrededor del eje X
+          let y2 = y1 * cosX - z1 * sinX;
+          let z2 = z1 * cosX + y1 * sinX;
+
+          // Proyección en perspectiva
+          const profundidad = focal + z2;
+          const escala = Math.max(0.35, focal / Math.max(120, profundidad));
+          const px = x1 * escala;
+          const py = y2 * escala;
+
+          // Evita que un texto quede encima justo del núcleo negro de 92px
+          const distCentro = Math.hypot(px, py);
+          const radioNucleo = 48;
+          let finalX = px;
+          let finalY = py;
+          if (distCentro < radioNucleo && distCentro > 0.1) {
+            const factor = radioNucleo / distCentro;
+            finalX = px * factor;
+            finalY = py * factor;
+          }
+
+          const opacidad = Math.min(1, Math.max(0.22, (z2 + 260) / 520));
+          n.el.style.opacity = opacidad.toFixed(2);
+          n.el.style.zIndex = z2 > 0 ? "12" : "5";
+          n.el.style.transform = `translate(-50%, -50%) translate3d(${finalX.toFixed(1)}px, ${finalY.toFixed(1)}px, 0) scale(${escala.toFixed(2)})`;
         }
-        requestAnimationFrame(animar);
+
+        if (!arrastrando) {
+          rotacionY += velocidadAutoY;
+        }
+        requestAnimationFrame(renderizar);
       }
-      animar();
+
+      renderizar();
     }
 
+    // Arrastrar con el dedo o mouse para girar las palabras alrededor del agujero negro
     pantallaUniverso.addEventListener("pointerdown", (e) => {
       arrastrando = true;
-      ultimoX = e.clientX;
+      prevX = e.clientX;
+      prevY = e.clientY;
     });
 
     window.addEventListener("pointermove", (e) => {
       if (!arrastrando) return;
-      const dx = e.clientX - ultimoX;
-      ultimoX = e.clientX;
-      rotacionExtra += dx * 0.006;
+      const dx = e.clientX - prevX;
+      const dy = e.clientY - prevY;
+      prevX = e.clientX;
+      prevY = e.clientY;
+      rotacionY += dx * 0.008;
+      rotacionX = Math.max(-0.9, Math.min(0.9, rotacionX + dy * 0.005));
     });
 
     window.addEventListener("pointerup", () => {
       arrastrando = false;
     });
 
-    btnRegalo.addEventListener("click", () => {
-      pantallaCelebra.style.display = "none";
-      pantallaUniverso.style.display = "block";
-      crearUniverso();
-      audio.play().catch(() => {});
+    // Controles de audio
+    function formatearTiempo(seg) {
+      if (!Number.isFinite(seg) || seg < 0) return "0:00";
+      const m = Math.floor(seg / 60);
+      const s = Math.floor(seg % 60);
+      return `${m}:${s < 10 ? "0" : ""}${s}`;
+    }
+
+    audio.addEventListener("timeupdate", () => {
+      tiempoAudio.textContent = formatearTiempo(audio.currentTime);
+      if (audio.duration > 0) {
+        progresoRelleno.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
+      }
     });
 
     btnPlay.addEventListener("click", () => {
-      if (audio.paused) audio.play().catch(() => {});
-      else audio.pause();
+      if (audio.paused) {
+        audio.play().then(() => {
+          btnPlay.textContent = "❚❚";
+        }).catch(() => {});
+      } else {
+        audio.pause();
+        btnPlay.textContent = "▶";
+      }
+    });
+
+    btnRegalo.addEventListener("click", () => {
+      clearInterval(intervaloCorazones);
+      pantallaCelebra.style.display = "none";
+      pantallaUniverso.style.display = "block";
+      crearNubesAlrededorDelCentro();
+      audio.play().then(() => {
+        btnPlay.textContent = "❚❚";
+      }).catch(() => {
+        btnPlay.textContent = "▶";
+      });
     });
   </script>
 </body>
