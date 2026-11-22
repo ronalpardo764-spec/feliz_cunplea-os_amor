@@ -287,7 +287,7 @@
     <button id="btn-regalo">🎁 Abre el regalo</button>
   </section>
 
-  <!-- 3. Agujero negro central + mensajes orbitando alrededor -->
+  <!-- 3. Agujero negro central + 100 mensajes orbitando alrededor -->
   <section id="pantalla-universo">
     <div class="resplandor-centro"></div>
     <div class="agujero-negro"></div>
@@ -363,26 +363,40 @@
       iniciarCorazones();
     });
 
-    // Mensajes que giran alrededor del agujero negro central
+    // 100 mensajes alrededor del agujero negro
     const mensajes = [
-      "💖 Feliz cumpleaños",
-      "✨ Un año más juntos",
-      "💕 Tú y yo",
-      "🌟 Mi cielo",
-      "👑 Mi reina",
-      "💘 Te amo",
-      "💫 Mi universo",
-      "🌸 Tu sonrisa",
-      "❤️ Eres todo",
-      "🔥 Mi vida",
-      "💎 Siempre juntos",
-      "🌙 Mi lugar favorito"
+      "🎂 ¡Feliz cumpleaños, bebé!","te amo tanto querida jhoselin", "✨ Un año más juntos", "💕 Tú y yo siempre", "🌟 Eres mi cielo",
+      "👑 Mi reina hermosa", "💘 Te amo muchísimo", "💫 Eres mi universo", "🌸 Amo tu sonrisa",
+      "❤️ Lo eres todo para mí", "🔥 El amor de mi vida", "💎 Brillamos como diamantes", "🌙 Mi lugar favorito",
+      "🥰 Contigo todo es mejor", "🎉 Hoy celebramos tu vida", "💖 Gracias por existir", "🌹 Eres mi mayor regalo",
+      "✨ Mi compañera de vida", "💞 Por mil cumpleaños más", "🫶 Mi corazón es tuyo", "☀️ Mi rayito de sol",
+      "🦋 Me haces muy feliz", "💫 Juntos contra todo", "🍓 Mi persona favorita", "💓 Cada día te amo más",
+      "🌟 Eres única y especial", "🥂 Por nuestra historia", "💝 Mi motivo de sonreír", "🌌 Mi estrella favorita",
+      "😘 Eres perfecta para mí", "🎀 Feliz vuelta al sol", "❤️‍🔥 Mi amor eterno", "🌈 Llenas mi vida de luz",
+      "🧸 Mi bebé hermosa", "✨ Siempre a tu lado", "💍 Mi presente y futuro", "🎶 Nuestra canción",
+      "🎂 Feliz cumple, amor", "💖 Te elegiría mil veces", "✨ Un año lleno de amor", "💕 Mi dulce princesa",
+      "🌟 Mi paz y mi alegría", "💘 Nunca dejes de sonreír", "💫 Eres mi sueño cumplido", "🌸 Qué lindo es amarte",
+      "❤️ Mi abrazo favorito", "🔥 Tu mirada me encanta", "💎 Más allá de las estrellas", "🌙 Mi noche y mi día",
+      "🥰 Gracias por cada momento", "🎉 Pide un deseo hoy", "💖 Eres mi tesoro", "🌹 Hoy es tu gran día",
+      "✨ Caminando de tu mano", "💞 Amor de verdad", "🫶 Cuidarte es mi felicidad", "☀️ Iluminas todo",
+      "🦋 Magia en tu forma de ser", "💫 Sin ti no sería igual", "🍓 Tan linda y especial", "💓 Mi latido favorito",
+      "🌟 Orgulloso de ti", "🥂 Brindemos por nosotros", "💝 Todo lo bonito eres tú", "🌌 Infinito contigo",
+      "😘 Un beso hasta el cielo", "🎀 Que seas muy feliz", "❤️‍🔥 Pasión y cariño", "🌈 Colores en mi vida",
+      "🧸 Mi chiquita bella", "✨ Cada segundo cuenta", "💍 Promesa de seguir juntos", "🎶 Melodía de mi alma",
+      "🎂 Feliz cumpleaños, vida", "💖 Mi complemento ideal", "✨ Un año inolvidable", "💕 Te adoro con el alma",
+      "🌟 Brillando a tu lado", "💘 Dueña de mi cariño", "💫 Nuestro propio universo", "🌸 Dulzura infinita",
+      "❤️ Por siempre tú y yo", "🔥 Amor que no se apaga", "💎 Valiosa como un diamante", "🌙 Sueños compartidos",
+      "🥰 Risas que enamoran", "🎉 Celebrando tu existencia", "💖 Mi mejor casualidad", "🌹 Flor de mi jardín",
+      "✨ Paso a paso juntos", "💞 Cariño sincero", "🫶 Siempre te apoyaré", "☀️ Calor de hogar",
+      "🦋 Alas para volar juntos", "💫 Destino bonito", "🍓 Lo más tierno que tengo", "💓 Amor que crece",
+      "🌟 Luz en mi camino", "🥂 Por muchos años más", "💝 Regalo de la vida", "🌌 Constelación de amor",
+      "😘 Eres mi todo", "🎀 Feliz cumpleaños, mi amor"
     ];
 
     const nodos = [];
     let rotacionY = 0;
     let rotacionX = 0.15;
-    const velocidadAutoY = 0.0045;
+    const velocidadAutoY = 0.004;
     let arrastrando = false;
     let prevX = 0;
     let prevY = 0;
@@ -392,29 +406,29 @@
       if (universoActivo) return;
       universoActivo = true;
 
-      const cantidad = 48;
+      const cantidad = 100;
       for (let i = 0; i < cantidad; i++) {
         const el = document.createElement("div");
         el.className = "palabra-3d";
         el.textContent = mensajes[i % mensajes.length];
 
-        const colores = ["#ffd6e7", "#ff9ec4", "#ffca99", "#ffffff", "#ff7aa8"];
+        const colores = ["#ffd6e7", "#ff9ec4", "#ffca99", "#ffffff", "#ff7aa8", "#ffe4b5"];
         el.style.color = colores[i % colores.length];
-        el.style.fontSize = `${13 + (i % 4) * 3}px`;
+        el.style.fontSize = `${11 + (i % 4) * 2.5}px`;
 
         const phi = Math.acos(1 - 2 * ((i + 0.5) / cantidad));
         const theta = Math.PI * (1 + Math.sqrt(5)) * i;
-        const radio = 135 + (i % 5) * 36;
+        const radio = 125 + (i % 8) * 30;
 
         const x0 = radio * Math.sin(phi) * Math.cos(theta);
-        const y0 = radio * Math.cos(phi) * 0.85;
+        const y0 = radio * Math.cos(phi) * 0.9;
         const z0 = radio * Math.sin(phi) * Math.sin(theta);
 
         escenaPalabras.appendChild(el);
         nodos.push({ el, x0, y0, z0 });
       }
 
-      const focal = 420;
+      const focal = 450;
 
       function renderizar() {
         const cosY = Math.cos(rotacionY);
@@ -431,7 +445,7 @@
           let z2 = z1 * cosX + y1 * sinX;
 
           const profundidad = focal + z2;
-          const escala = Math.max(0.35, focal / Math.max(120, profundidad));
+          const escala = Math.max(0.32, focal / Math.max(120, profundidad));
           const px = x1 * escala;
           const py = y2 * escala;
 
@@ -445,7 +459,7 @@
             finalY = py * factor;
           }
 
-          const opacidad = Math.min(1, Math.max(0.22, (z2 + 260) / 520));
+          const opacidad = Math.min(1, Math.max(0.2, (z2 + 300) / 600));
           n.el.style.opacity = opacidad.toFixed(2);
           n.el.style.zIndex = z2 > 0 ? "12" : "5";
           n.el.style.transform = `translate(-50%, -50%) translate3d(${finalX.toFixed(1)}px, ${finalY.toFixed(1)}px, 0) scale(${escala.toFixed(2)})`;
